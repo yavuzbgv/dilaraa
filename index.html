@@ -24,25 +24,40 @@
       justify-content: center;
       align-items: center;
       background: linear-gradient(135deg, #a5d6a7, #c8e6c9);
+      padding: 20px;
+    }
+
+    .password-screen label {
+      font-size: 1.2rem;
+      margin-top: 15px;
+      display: block;
     }
 
     .password-screen input {
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 8px;
-      margin-top: 10px;
+      margin-top: 5px;
       font-size: 1rem;
+      width: 200px;
+      text-align: center;
     }
 
     .password-screen button {
-      margin-top: 15px;
-      padding: 10px 20px;
+      margin-top: 20px;
+      padding: 10px 30px;
       border: none;
       background: #4caf50;
       color: white;
       border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
+    }
+
+    .error {
+      color: red;
+      margin-top: 15px;
+      min-height: 1.2em;
     }
 
     .container {
@@ -113,10 +128,34 @@
   <!-- Şifre ekranı -->
   <div class="password-screen" id="passwordScreen">
     <h2>Bu sayfa korumalı 🔐</h2>
-    <p>Lütfen şifreyi girin</p>
-    <input type="password" id="passwordInput" placeholder="Şifre" />
-    <button onclick="checkPassword()">Giriş Yap</button>
-    <p id="error" style="color: red;"></p>
+    <form id="passwordForm">
+      <div>
+        <label for="q0">Kaç yaşına gelmeden evlenmen lazım? (30 için)</label>
+        <input type="number" id="q0" required />
+      </div>
+      <div>
+        <label for="q1">Seni sevmediğim gün sayısı nedir? (0 için)</label>
+        <input type="number" id="q1" required />
+      </div>
+      <div>
+        <label for="q2">Ronaldonun forma numarası kaçtır? (7 için)</label>
+        <input type="number" id="q2" required />
+      </div>
+      <div>
+        <label for="q3">Tanıştığımız yaşlarımız kaçtır? (20 için)</label>
+        <input type="number" id="q3" required />
+      </div>
+      <div>
+        <label for="q4">Zaten anlamışsındır di mi? (0 için)</label>
+        <input type="number" id="q4" required />
+      </div>
+      <div>
+        <label for="q5">Zaten anlamışsındır di mi? (2 için)</label>
+        <input type="number" id="q5" required />
+      </div>
+      <button type="submit">Giriş Yap</button>
+    </form>
+    <p class="error" id="error"></p>
   </div>
 
   <!-- Arkaplan animasyonları -->
@@ -140,8 +179,8 @@
     </audio>
 
     <div class="message">
-      Seni tanıdığım gün hayatımın rengi değişti, Dilara.  
-      Bu doğum günü sadece senin değil, aslında ikimizin.  
+      Seni tanıdığım gün hayatımın rengi değişti, Dilara.<br>
+      Bu doğum günü sadece senin değil, aslında ikimizin.<br>
       İyi ki varsın...
     </div>
 
@@ -151,18 +190,33 @@
   </div>
 
   <script>
-    function checkPassword() {
-      const correctPassword = "081522";
-      const input = document.getElementById("passwordInput").value;
-      const error = document.getElementById("error");
+    document.getElementById('passwordForm').addEventListener('submit', function(e) {
+      e.preventDefault();
 
-      if (input === correctPassword) {
-        document.getElementById("passwordScreen").classList.add("hidden");
-        document.getElementById("intro").classList.remove("hidden");
-      } else {
-        error.textContent = "Hatalı şifre! Tekrar deneyin.";
+      const answers = [
+        "30",  // 0: 30 yaşına gelmeden evlenmen lazım
+        "0",   // 1: seni sevmediğim gün sayısı
+        "7",   // 2: Ronaldonun forma numarası
+        "20",  // 3: tanıştığımız yaşlarımız
+        "0",   // 4: zaten anlamışsındır di mi
+        "2"    // 5: zaten anlamışsındır di mi
+      ];
+
+      let errorElem = document.getElementById('error');
+
+      for(let i=0; i<6; i++) {
+        const input = document.getElementById('q'+i).value.trim();
+        if(input !== answers[i]) {
+          errorElem.textContent = `Soru ${i+1} yanlış! Lütfen tekrar kontrol et.`;
+          return;
+        }
       }
-    }
+
+      // Tüm cevaplar doğruysa:
+      errorElem.textContent = "";
+      document.getElementById('passwordScreen').classList.add('hidden');
+      document.getElementById('intro').classList.remove('hidden');
+    });
 
     function startCard() {
       document.getElementById('intro').classList.add('hidden');
