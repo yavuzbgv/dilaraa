@@ -40,10 +40,6 @@
     color: red;
     margin-top: 8px;
   }
-  #cardContent {
-    margin-top: 20px;
-    display: none;
-  }
 </style>
 </head>
 <body>
@@ -102,17 +98,15 @@
       <h3>Şifre doğru! 🎉</h3>
       <button id="continueBtn">Devam Et</button>
     `;
-
     document.getElementById("continueBtn").addEventListener("click", showCard);
   }
 
   function showCard() {
-    // Soruları ve butonu gizle
-    document.getElementById("questions-container").style.display = "none";
-    document.body.innerHTML += `
+    // Body içeriğini tamamen değiştir
+    document.body.innerHTML = `
       <h1>🎉 İyi ki Doğdun, Dilara!</h1>
       <p>Bu kart senin için hazırlandı 💌</p>
-      <button onclick="startCard()">Devam et ve müziği başlat</button>
+      <button id="startMusicBtn">Devam et ve müziği başlat</button>
       <div id="cardContent" style="margin-top:20px;">
         <audio id="bgm" loop>
           <source src="https://dl.sndup.net/3hvm/Madrigal-Enstrumantal.mp3" type="audio/mpeg">
@@ -128,15 +122,16 @@
         <img src="IMG_20220827_210953.jpg" alt="Fotoğraf 3" width="300" style="margin-top: 20px;" />
       </div>
     `;
-  }
 
-  function startCard() {
-    const bgm = document.getElementById('bgm');
-    if (bgm) {
-      bgm.play().catch(e => {
-        console.warn("Otomatik müzik çalmaya izin verilmedi:", e);
-      });
-    }
+    // Butona event listener ekle
+    document.getElementById("startMusicBtn").addEventListener("click", () => {
+      const bgm = document.getElementById("bgm");
+      if (bgm) {
+        bgm.play().catch(e => {
+          console.warn("Otomatik müzik çalmaya izin verilmedi:", e);
+        });
+      }
+    });
   }
 
   // İlk soruyu göster
