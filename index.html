@@ -17,93 +17,6 @@
       display: none;
     }
 
-    .container {
-      padding: 2rem;
-    }
-
-    .button {
-      background: #4caf50;
-      color: white;
-      border: none;
-      padding: 1rem 2rem;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 1rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .hearts, .confetti {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: green;
-      transform: rotate(45deg);
-      animation: float 6s linear infinite;
-    }
-
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: green;
-      border-radius: 50%;
-    }
-
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) rotate(45deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh) rotate(45deg);
-        opacity: 0;
-      }
-    }
-
-    .confetti-piece {
-      position: absolute;
-      top: 0;
-      font-weight: bold;
-      font-size: 1.2em;
-      animation: confetti-fall 5s linear forwards;
-    }
-
-    @keyframes confetti-fall {
-      0% {
-        top: 0;
-        opacity: 1;
-      }
-      100% {
-        top: 100vh;
-        opacity: 0;
-      }
-    }
-
     .password-screen {
       height: 100vh;
       display: flex;
@@ -131,6 +44,68 @@
       font-size: 1rem;
       cursor: pointer;
     }
+
+    .container {
+      padding: 30px;
+    }
+
+    .button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      background: #388e3c;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+
+    .hearts, .confetti {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .heart {
+      position: absolute;
+      color: green;
+      font-size: 2rem;
+      animation: float 8s linear infinite;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      animation: fall 5s linear infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+      }
+    }
   </style>
 </head>
 <body>
@@ -144,36 +119,35 @@
     <p id="error" style="color: red;"></p>
   </div>
 
-  <!-- Ana içerik -->
-  <div id="mainContent" class="hidden">
-    <div class="hearts" id="hearts"></div>
-    <div class="confetti" id="confetti"></div>
+  <!-- Arkaplan animasyonları -->
+  <div class="hearts" id="hearts"></div>
+  <div class="confetti" id="confetti"></div>
 
-    <div class="container" id="intro">
-      <h1>🎉 İyi ki Doğdun, Dilara!</h1>
-      <p>Bu kart senin için hazırlandı 💌</p>
-      <button class="button" onclick="startCard()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        Devam et ve müziği başlat
-      </button>
+  <!-- Giriş bölümü -->
+  <div class="container hidden" id="intro">
+    <h1>🎉 İyi ki Doğdun, Dilara!</h1>
+    <p>Bu kart senin için hazırlandı 💌</p>
+    <button class="button" onclick="startCard()">
+      Devam et ve müziği başlat
+    </button>
+  </div>
+
+  <!-- Kart içeriği -->
+  <div class="container hidden" id="card">
+    <audio id="bgm" loop>
+      <source src="https://dl.sndup.net/3hvm/Madrigal-Enstrumantal.mp3" type="audio/mpeg">
+      Tarayıcınız ses öğesini desteklemiyor.
+    </audio>
+
+    <div class="message">
+      Seni tanıdığım gün hayatımın rengi değişti, Dilara.  
+      Bu doğum günü sadece senin değil, aslında ikimizin.  
+      İyi ki varsın...
     </div>
 
-    <div class="container hidden" id="card">
-      <audio id="bgm" autoplay loop>
-        <source src="https://dl.sndup.net/3hvm/Madrigal-Enstrumantal.mp3" type="audio/mpeg">
-        Tarayıcınız ses öğesini desteklemiyor.
-      </audio>
-
-      <div class="message">
-        Seni tanıdığım gün hayatımın rengi değişti, Dilara.
-        Bu doğum günü sadece senin değil, aslında ikimizin.
-        İyi ki varsın...
-      </div>
-
-      <img src="IMG-20230131-WA0079.jpg" alt="Fotoğraf 1" />
-      <img src="IMG-20230206-WA0008.jpg" alt="Fotoğraf 2" />
-      <img src="IMG_20220827_210953.jpg" alt="Fotoğraf 3" />
-    </div>
+    <img src="IMG-20230131-WA0079.jpg" alt="Fotoğraf 1" width="300" />
+    <img src="IMG-20230206-WA0008.jpg" alt="Fotoğraf 2" width="300" />
+    <img src="IMG_20220827_210953.jpg" alt="Fotoğraf 3" width="300" />
   </div>
 
   <script>
@@ -184,22 +158,29 @@
 
       if (input === correctPassword) {
         document.getElementById("passwordScreen").classList.add("hidden");
-        document.getElementById("mainContent").classList.remove("hidden");
+        document.getElementById("intro").classList.remove("hidden");
       } else {
-        error.textContent = "Hatalı şifre! Lütfen tekrar deneyin.";
+        error.textContent = "Hatalı şifre! Tekrar deneyin.";
       }
     }
 
     function startCard() {
       document.getElementById('intro').classList.add('hidden');
       document.getElementById('card').classList.remove('hidden');
-      document.getElementById('bgm').play();
+      const bgm = document.getElementById('bgm');
+      if (bgm) {
+        bgm.play().catch((e) => {
+          console.warn("Otomatik müzik çalmaya izin verilmedi:", e);
+        });
+      }
     }
 
+    // Animasyonlar
     const heartContainer = document.getElementById('hearts');
     setInterval(() => {
       const heart = document.createElement('div');
       heart.classList.add('heart');
+      heart.innerText = '💚';
       heart.style.left = Math.random() * 100 + 'vw';
       heart.style.animationDuration = 4 + Math.random() * 4 + 's';
       heartContainer.appendChild(heart);
@@ -215,6 +196,8 @@
       confetti.style.setProperty('--hue', Math.floor(Math.random() * 360));
       confetti.innerText = letters[Math.floor(Math.random() * letters.length)];
       confetti.style.color = `hsl(${confetti.style.getPropertyValue('--hue')}, 70%, 40%)`;
+      confetti.style.fontWeight = 'bold';
+      confetti.style.fontSize = '1.2em';
       confettiContainer.appendChild(confetti);
       setTimeout(() => confetti.remove(), 5000);
     }, 150);
