@@ -5,17 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>İyi ki Doğdun Dilara</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #eafaf1, #c8e6c9);
+      margin: 0;
+      background: #e8f5e9;
       color: #2e4e3f;
       text-align: center;
-      overflow-x: hidden;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .container {
+      padding: 2rem;
+    }
+
+    .button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .hearts, .confetti {
@@ -25,186 +42,154 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 0;
+      z-index: -1;
     }
 
     .heart {
       position: absolute;
       width: 20px;
       height: 20px;
-      background: #81c784;
+      background: green;
       transform: rotate(45deg);
-      animation: float 8s linear infinite;
+      animation: float 6s linear infinite;
     }
 
-    .heart::before, .heart::after {
+    .heart::before,
+    .heart::after {
       content: "";
       position: absolute;
       width: 20px;
       height: 20px;
-      background: #81c784;
+      background: green;
       border-radius: 50%;
     }
 
-    .heart::before { top: -10px; left: 0; }
-    .heart::after { top: 0; left: -10px; }
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
 
     @keyframes float {
-      0% { transform: translateY(100vh) rotate(45deg); opacity: 1; }
-      100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
     }
 
     .confetti-piece {
       position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: hsl(var(--hue), 70%, 60%);
       top: 0;
-      left: 50%;
-      animation: confetti-fall 5s linear infinite;
-      transform: rotate(45deg);
-      opacity: 0.8;
       font-weight: bold;
       font-size: 1.2em;
+      animation: confetti-fall 5s linear forwards;
     }
 
     @keyframes confetti-fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+      0% {
+        top: 0;
+        opacity: 1;
+      }
+      100% {
+        top: 100vh;
+        opacity: 0;
+      }
     }
 
-    .container {
-      padding: 20px;
-      max-width: 90vw;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    h1 {
-      color: #4caf50;
-      font-size: 2.2rem;
-      margin-top: 1rem;
-      animation: slideDown 1s ease-in-out;
-    }
-
-    .message {
-      background: #fff;
-      border-left: 5px solid #4caf50;
-      border-radius: 10px;
-      padding: 1.2rem;
-      margin: 1.5rem auto;
-      max-width: 600px;
-      font-size: 1rem;
-      white-space: pre-line;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-      animation: fadeInUp 1s ease-in-out;
-    }
-
-    img {
-      width: 100%;
-      max-width: 350px;
-      border-radius: 15px;
-      margin: 1rem auto;
-      display: block;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-      animation: fadeIn 1.2s ease-in-out;
-    }
-
-    img:hover {
-      transform: scale(1.03);
-    }
-
-    .button {
-      width: 100%;
-      max-width: 320px;
-      margin: 2rem auto;
-      padding: 14px;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 15px;
-      color: #2e4e3f;
-      font-size: 1.1rem;
-      cursor: pointer;
+    .password-screen {
+      height: 100vh;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      flex-direction: column;
       justify-content: center;
-      transition: all 0.3s ease;
+      align-items: center;
+      background: linear-gradient(135deg, #a5d6a7, #c8e6c9);
     }
 
-    .button:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    .password-screen input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 1rem;
     }
 
-    .button svg {
-      width: 20px;
-      height: 20px;
-      fill: #2e4e3f;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    audio {
-      margin-top: 20px;
-      width: 100%;
-      max-width: 500px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .password-screen button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      background: #4caf50;
+      color: white;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="hearts" id="hearts"></div>
-  <div class="confetti" id="confetti"></div>
 
-  <div class="container" id="intro">
-    <h1>🎉 İyi ki Doğdun, Dilara!</h1>
-    <p>Bu kart senin için hazırlandı 💌</p>
-    <button class="button" onclick="startCard()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      Devam et ve müziği başlat
-    </button>
+  <!-- Şifre ekranı -->
+  <div class="password-screen" id="passwordScreen">
+    <h2>Bu sayfa korumalı 🔐</h2>
+    <p>Lütfen şifreyi girin</p>
+    <input type="password" id="passwordInput" placeholder="Şifre" />
+    <button onclick="checkPassword()">Giriş Yap</button>
+    <p id="error" style="color: red;"></p>
   </div>
 
-  <div class="container hidden" id="card">
-    <audio id="bgm" autoplay loop>
-      <source src="https://dl.sndup.net/3hvm/Madrigal-Enstrumantal.mp3" type="audio/mpeg">
-      Tarayıcınız ses öğesini desteklemiyor.
-    </audio>
+  <!-- Ana içerik -->
+  <div id="mainContent" class="hidden">
+    <div class="hearts" id="hearts"></div>
+    <div class="confetti" id="confetti"></div>
 
-    <div class="message">
-      Seni tanıdığım gün hayatımın rengi değişti, Dilara.
-      Bu doğum günü sadece senin değil, aslında ikimizin.
-      İyi ki varsın...
+    <div class="container" id="intro">
+      <h1>🎉 İyi ki Doğdun, Dilara!</h1>
+      <p>Bu kart senin için hazırlandı 💌</p>
+      <button class="button" onclick="startCard()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        Devam et ve müziği başlat
+      </button>
     </div>
 
-    <img src="IMG-20230131-WA0079.jpg" alt="Fotoğraf 1" />
-    <img src="IMG-20230206-WA0008.jpg" alt="Fotoğraf 2" />
-    <img src="IMG_20220827_210953.jpg" alt="Fotoğraf 3" />
+    <div class="container hidden" id="card">
+      <audio id="bgm" autoplay loop>
+        <source src="https://dl.sndup.net/3hvm/Madrigal-Enstrumantal.mp3" type="audio/mpeg">
+        Tarayıcınız ses öğesini desteklemiyor.
+      </audio>
+
+      <div class="message">
+        Seni tanıdığım gün hayatımın rengi değişti, Dilara.
+        Bu doğum günü sadece senin değil, aslında ikimizin.
+        İyi ki varsın...
+      </div>
+
+      <img src="IMG-20230131-WA0079.jpg" alt="Fotoğraf 1" />
+      <img src="IMG-20230206-WA0008.jpg" alt="Fotoğraf 2" />
+      <img src="IMG_20220827_210953.jpg" alt="Fotoğraf 3" />
+    </div>
   </div>
 
   <script>
+    function checkPassword() {
+      const correctPassword = "081522";
+      const input = document.getElementById("passwordInput").value;
+      const error = document.getElementById("error");
+
+      if (input === correctPassword) {
+        document.getElementById("passwordScreen").classList.add("hidden");
+        document.getElementById("mainContent").classList.remove("hidden");
+      } else {
+        error.textContent = "Hatalı şifre! Lütfen tekrar deneyin.";
+      }
+    }
+
     function startCard() {
       document.getElementById('intro').classList.add('hidden');
       document.getElementById('card').classList.remove('hidden');
