@@ -1,171 +1,124 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>İyi ki Doğdun Dilara - Şifreli Giriş</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0; padding: 0;
-      background: #e8f5e9;
-      color: #2e4e3f;
-      text-align: center;
-    }
-    .password-screen {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #a5d6a7, #c8e6c9);
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    label {
-      display: block;
-      margin: 15px 0 5px;
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    input[type="password"] {
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      width: 250px;
-      max-width: 90vw;
-    }
-    #submitBtn {
-      margin-top: 25px;
-      padding: 12px 30px;
-      font-size: 1.1rem;
-      background: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      opacity: 0.5;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    #submitBtn.enabled {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    #errorMsg {
-      color: red;
-      margin-top: 15px;
-      min-height: 20px;
-      font-weight: 600;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Şifre Koruması - Doğum Günü Kartı</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    max-width: 400px;
+    margin: auto;
+    background: #e8f5e9;
+    color: #2e4e3f;
+  }
+  .question {
+    margin-bottom: 20px;
+  }
+  input[type=text] {
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+  }
+  button {
+    padding: 10px 20px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+  button:disabled {
+    background: #ccc;
+    cursor: default;
+  }
+  .error {
+    color: red;
+    margin-top: 8px;
+  }
+</style>
 </head>
 <body>
 
-  <div class="password-screen" id="passwordScreen">
-    <h2>Bu sayfa korumalı 🔐</h2>
-    <p>Lütfen aşağıdaki soruları cevaplayarak şifreyi bulun:</p>
-    
-    <form id="passwordForm" autocomplete="off">
-      <label for="q1">3 - Kaç yaşına gelmeden evlenmen lazım?</label>
-      <input type="password" id="q1" maxlength="1" required />
+<h2>Sayfaya Giriş İçin Şifreyi Giriniz</h2>
 
-      <label for="q2">0 - Seni sevmediğim toplam gün sayısı kaçtır?</label>
-      <input type="password" id="q2" maxlength="1" required />
+<div id="questions-container">
 
-      <label for="q3">0 - Seni unuttuğum gün sayısı kaçtır?</label>
-      <input type="password" id="q3" maxlength="1" required />
+  <!-- Sorular buraya JS ile eklenecek -->
 
-      <label for="q4">7 - Ronaldonun forma numarası nedir?</label>
-      <input type="password" id="q4" maxlength="1" required />
+</div>
 
-      <label for="q5">2 - Tanıştığımız yaşlarımız kaçtır?</label>
-      <input type="password" id="q5" maxlength="1" required />
+<script>
+  const questions = [
+    { q: "Kaç yaşına gelmeden evlenmen lazım?", a: "3" },
+    { q: "Seni sevmediğim gün sayısı", a: "0" },
+    { q: "Seni sevmediğim gün sayısı", a: "0" },
+    { q: "Ronaldonun forma numarası", a: "7" },
+    { q: "Tanıştığımız yaşlarımız", a: "2" },
+    { q: "Seni sevmediğim gün sayısı", a: "0" },
+    { q: "Seni sevmediğim gün sayısı", a: "0" },
+    { q: "Zaten anlamışsındır di mi?", a: "2" }
+  ];
 
-      <label for="q6">0 - Seni yarıyolda bırakma ihtimalim kaçtır?</label>
-      <input type="password" id="q6" maxlength="1" required />
+  let current = 0;
 
-      <label for="q7">0 - Zaten anlamışsındır di mi?</label>
-      <input type="password" id="q7" maxlength="1" required />
+  function showQuestion(index) {
+    const container = document.getElementById("questions-container");
+    container.innerHTML = `
+      <div class="question">
+        <label><strong>Soru ${index+1}:</strong> ${questions[index].q}</label>
+        <input type="text" id="answerInput" autocomplete="off" />
+        <div id="error" class="error"></div>
+        <button onclick="checkAnswer()">Gönder</button>
+      </div>
+    `;
+    document.getElementById("answerInput").focus();
+  }
 
-      <label for="q8">2 - Zaten anlamışsındır di mi?</label>
-      <input type="password" id="q8" maxlength="1" required />
-
-      <button type="submit" id="submitBtn">Giriş Yap</button>
-    </form>
-
-    <p id="errorMsg"></p>
-  </div>
-
-  <!-- Asıl içerik buraya -->
-  <div class="container hidden" id="intro">
-    <h1>🎉 İyi ki Doğdun, Dilara!</h1>
-    <p>Bu kart senin için hazırlandı 💌</p>
-    <button id="startButton" class="button">Devam et ve müziği başlat</button>
-  </div>
-
-  <div class="container hidden" id="card">
-    <audio id="bgm" loop>
-      <source src="https://dl.sndup.net/3hvm/Madrigal-Enstrumantal.mp3" type="audio/mpeg" />
-      Tarayıcınız ses öğesini desteklemiyor.
-    </audio>
-
-    <div class="message">
-      Seni tanıdığım gün hayatımın rengi değişti, Dilara.<br />
-      Bu doğum günü sadece senin değil, aslında ikimizin.<br />
-      İyi ki varsın...
-    </div>
-
-    <img src="IMG-20230131-WA0079.jpg" alt="Fotoğraf 1" width="300" />
-    <img src="IMG-20230206-WA0008.jpg" alt="Fotoğraf 2" width="300" />
-    <img src="IMG_20220827_210953.jpg" alt="Fotoğraf 3" width="300" />
-  </div>
-
-  <script>
-    const correctAnswers = ['3', '0', '0', '7', '2', '0', '0', '2'];
-    const form = document.getElementById('passwordForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const errorMsg = document.getElementById('errorMsg');
-
-    // Form inputlarını takip ederek submit butonunu aktif yap
-    form.addEventListener('input', () => {
-      const allFilled = [...form.elements].slice(0,8).every(input => input.value.length === 1);
-      submitBtn.classList.toggle('enabled', allFilled);
-      submitBtn.disabled = !allFilled;
-      if(allFilled) errorMsg.textContent = '';
-    });
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const userAnswers = [...form.elements].slice(0,8).map(input => input.value);
-      let allCorrect = true;
-      for(let i=0; i < correctAnswers.length; i++) {
-        if(userAnswers[i] !== correctAnswers[i]) {
-          allCorrect = false;
-          break;
-        }
-      }
-      if(allCorrect) {
-        // Başarılı giriş
-        document.getElementById('passwordScreen').classList.add('hidden');
-        document.getElementById('intro').classList.remove('hidden');
+  function checkAnswer() {
+    const input = document.getElementById("answerInput").value.trim();
+    const errorDiv = document.getElementById("error");
+    if (input === questions[current].a) {
+      current++;
+      if (current >= questions.length) {
+        // Tüm sorular doğru cevaplandı, sayfayı göster
+        showSuccess();
       } else {
-        errorMsg.textContent = 'Yanlış cevaplar var, lütfen tekrar kontrol edin.';
+        // Sonraki soruyu göster
+        showQuestion(current);
       }
-    });
+    } else {
+      errorDiv.textContent = "Yanlış cevap, tekrar deneyin.";
+    }
+  }
 
-    // Başlat butonu
-    document.getElementById('startButton').addEventListener('click', () => {
-      document.getElementById('intro').classList.add('hidden');
-      document.getElementById('card').classList.remove('hidden');
-      const bgm = document.getElementById('bgm');
-      if (bgm) {
-        bgm.play().catch(e => {
-          console.warn("Müzik otomatik çalamadı:", e);
-        });
-      }
-    });
-  </script>
-</body>
-</html>
+  function showSuccess() {
+    const container = document.getElementById("questions-container");
+    container.innerHTML = `
+      <h3>Şifre doğru! 🎉</h3>
+      <button onclick="showCard()">Devam Et</button>
+    `;
+  }
+
+  function showCard() {
+    // Şifre ekranını kaldırıp gerçek sayfayı göstereceğiz
+    document.body.innerHTML = `
+      <h1>🎉 İyi ki Doğdun, Dilara!</h1>
+      <p>Bu kart senin için hazırlandı 💌</p>
+      <button onclick="startCard()">Devam et ve müziği başlat</button>
+      <div id="cardContent" style="display:none; margin-top:20px;">
+        <audio id="bgm" loop>
+          <source src="https://dl.sndup.net/3hvm/Madrigal-Enstrumantal.mp3" type="audio/mpeg">
+          Tarayıcınız ses öğesini desteklemiyor.
+        </audio>
+        <div style="margin-top: 20px; font-size: 1.2rem;">
+          Seni tanıdığım gün hayatımın rengi değişti, Dilara.<br/>
+          Bu doğum günü sadece senin değil, aslında ikimizin.<br/>
+          İyi ki varsın...
+        </div>
+        <img src="IMG-20230131-WA0079.jpg" alt="Fotoğraf 1" width="300" style="margin-top: 20px;" />
+        <img src="IMG-20230206-WA0008.jpg" alt="Fotoğraf 2" width="300" style="margin-top: 20px;" />
+        <img src="IMG_
