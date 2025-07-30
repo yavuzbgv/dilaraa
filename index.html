@@ -1,142 +1,126 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Şifre Koruması - Doğum Günü Kartı</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    padding: 30px;
-    max-width: 500px;
-    margin: auto;
-    background: #e8f5e9;
-    color: #2e4e3f;
-    text-align: center;
-  }
-  .question {
-    margin-bottom: 20px;
-  }
-  input[type=text] {
-    padding: 8px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 1rem;
-  }
-  button {
-    padding: 10px 20px;
-    background: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    border-radius: 5px;
-  }
-  button:disabled {
-    background: #ccc;
-    cursor: default;
-  }
-  .error {
-    color: red;
-    margin-top: 8px;
-  }
-  #cardContent {
-    margin-top: 20px;
-    display: none;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Doğum Günü Kartı - Giriş</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e8f5e9;
+      color: #2e4e3f;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+    #cardContent {
+      display: none;
+    }
+    img {
+      width: 300px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
 
-<h2>Sayfaya Giriş İçin Şifreyi Giriniz</h2>
+  <h2>Sayfaya Giriş İçin Soruları Cevapla</h2>
+  <div id="quiz"></div>
 
-<div id="questions-container"></div>
+  <script>
+    const questions = [
+      { q: "Kaç yaşına gelmeden evlenmen lazım?", a: "30" },
+      { q: "Seni sevmediğim toplam gün sayısı", a: "0" },
+      { q: "Seni unuttuğum gün sayısı", a: "0" },
+      { q: "Ronaldonun forma numarası", a: "7" },
+      { q: "Tanıştığımız yaşlarımız", a: "20" },
+      { q: "Seni yarıyolda bırakma ihtimalim kaçtır?", a: "0" },
+      { q: "Zaten anlamışsındır di mi? (1)", a: "2" },
+      { q: "Zaten anlamışsındır di mi? (2)", a: "2" }
+    ];
 
-<script>
-  const questions = [
-    { q: "Kaç yaşına gelmeden evlenmen lazım?", a: "30" },
-    { q: "Seni sevmediğim toplam gün sayısı (ilk sıfır için)", a: "0" },
-    { q: "Seni unuttuğum gün sayısı (ikinci sıfır için)", a: "0" },
-    { q: "Ronaldonun forma numarası", a: "7" },
-    { q: "Tanıştığımız yaşlarımız", a: "20" },
-    { q: "Seni yarıyolda bırakma ihtimalim kaçtır? (üçüncü sıfır için)", a: "0" },
-    { q: "Zaten anlamışsındır di mi? (birinci 2 için)", a: "2" },
-    { q: "Zaten anlamışsındır di mi? (ikinci 2 için)", a: "2" }
-  ];
+    let current = 0;
 
-  let current = 0;
-
-  function showQuestion(index) {
-    const container = document.getElementById("questions-container");
-    container.innerHTML = `
-      <div class="question">
-        <label><strong>Soru ${index + 1}:</strong> ${questions[index].q}</label>
-        <input type="text" id="answerInput" autocomplete="off" />
-        <div id="error" class="error"></div>
-        <button onclick="checkAnswer()">Gönder</button>
-      </div>
-    `;
-    document.getElementById("answerInput").focus();
-  }
-
-  function checkAnswer() {
-    const input = document.getElementById("answerInput").value.trim();
-    const errorDiv = document.getElementById("error");
-    if (input === questions[current].a) {
-      current++;
-      if (current >= questions.length) {
-        showSuccess();
-      } else {
-        showQuestion(current);
-      }
-    } else {
-      errorDiv.textContent = "Yanlış cevap, tekrar deneyin.";
+    function showQuestion() {
+      const container = document.getElementById("quiz");
+      container.innerHTML = `
+        <div>
+          <p><strong>Soru ${current + 1}:</strong> ${questions[current].q}</p>
+          <input type="text" id="answer" />
+          <div class="error" id="error"></div>
+          <button onclick="checkAnswer()">Gönder</button>
+        </div>
+      `;
     }
-  }
 
-  function showSuccess() {
-    const container = document.getElementById("questions-container");
-    container.innerHTML = `
-      <h3>Şifre doğru! 🎉</h3>
-      <button id="continueBtn">Devam Et</button>
-    `;
-    document.getElementById("continueBtn").addEventListener("click", showCard);
-  }
+    function checkAnswer() {
+      const input = document.getElementById("answer").value.trim();
+      const error = document.getElementById("error");
 
-  function showCard() {
-    document.body.innerHTML = `
-      <h1>🎉 İyi ki Doğdun, Dilara!</h1>
-      <p>Bu kart senin için hazırlandı 💌</p>
-      <button onclick="startCard()">Devam et ve müziği başlat</button>
-      <div id="cardContent" style="margin-top:20px;">
-        <audio id="bgm" loop>
+      if (input === questions[current].a) {
+        current++;
+        if (current < questions.length) {
+          showQuestion();
+        } else {
+          showContinueButton();
+        }
+      } else {
+        error.textContent = "Yanlış cevap. Tekrar dene.";
+      }
+    }
+
+    function showContinueButton() {
+      const container = document.getElementById("quiz");
+      container.innerHTML = `
+        <h3>Şifre doğru 🎉</h3>
+        <button onclick="showCard()">Devam Et</button>
+      `;
+    }
+
+    function showCard() {
+      document.body.innerHTML = `
+        <h1>🎉 İyi ki Doğdun, Dilara!</h1>
+        <p>Bu kart senin için hazırlandı 💌</p>
+        <audio id="bgm" controls autoplay loop>
           <source src="https://dl.sndup.net/3hvm/Madrigal-Enstrumantal.mp3" type="audio/mpeg">
-          Tarayıcınız ses öğesini desteklemiyor.
+          Tarayıcınız bu ses öğesini desteklemiyor.
         </audio>
         <div style="margin-top: 20px; font-size: 1.2rem;">
           Seni tanıdığım gün hayatımın rengi değişti, Dilara.<br/>
           Bu doğum günü sadece senin değil, aslında ikimizin.<br/>
           İyi ki varsın...
         </div>
-        <img src="IMG-20230131-WA0079.jpg" alt="Fotoğraf 1" width="300" style="margin-top: 20px;" />
-        <img src="IMG-20230206-WA0008.jpg" alt="Fotoğraf 2" width="300" style="margin-top: 20px;" />
-        <img src="IMG_20220827_210953.jpg" alt="Fotoğraf 3" width="300" style="margin-top: 20px;" />
-      </div>
-    `;
-  }
-
-  function startCard() {
-    const bgm = document.getElementById('bgm');
-    if (bgm) {
-      bgm.play().catch(e => {
-        console.warn("Otomatik müzik çalmaya izin verilmedi:", e);
-      });
+        <img src="IMG-20230131-WA0079.jpg" alt="Fotoğraf 1" />
+        <img src="IMG-20230206-WA0008.jpg" alt="Fotoğraf 2" />
+        <img src="IMG_20220827_210953.jpg" alt="Fotoğraf 3" />
+      `;
     }
-  }
 
-  // İlk soruyu göster
-  showQuestion(current);
-</script>
+    // İlk soruyu göster
+    showQuestion();
+  </script>
 
 </body>
 </html>
